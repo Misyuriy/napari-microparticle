@@ -1,0 +1,34 @@
+name: napari-microparticle
+contributions:
+  commands:
+    - id: napari-microparticle.measure_pore_area_fraction
+      title: Measure the total pore area fraction for all particles
+      python_name: napari_microparticle:measure_pore_area_fraction
+    - id: napari-microparticle.export_data
+      title: Export data to spreadsheet
+      python_name: napari_microparticle:export_data
+    - id: napari-microparticle.segment_porous_structure
+      title: Segment porous structure for segmented particles
+      python_name: napari_microparticle:segment_porous_structure
+    - id: napari-microparticle.test_segment_porous_structure
+      title: Test pore segmentation for entire image
+      python_name: napari_microparticle:test_segment_porous_structure
+    - id: napari-microparticle.check_disconnected_regions
+      title: Check for disconnected regions in labels
+      python_name: napari_microparticle:check_disconnected_regions
+    - id: napari-microparticle.clean_disconnected_regions
+      title: Clean segmentation artifacts (tiny disconnected regions)
+      python_name: napari_microparticle:clean_disconnected_regions
+  widgets:
+    - command: napari-microparticle.export_data
+      display_name: Export data to spreadsheet
+    - command: napari-microparticle.segment_porous_structure
+      display_name: Porous structure segmentation
+    - command: napari-microparticle.clean_disconnected_regions
+      display_name: Clean tiny disconnected regions
+    - command: napari-microparticle.check_disconnected_regions
+      display_name: Check disconnected regions
+    - command: napari-microparticle.test_segment_porous_structure
+      display_name: Porous structure segmentation (DEBUG)
+    - command: napari-microparticle.measure_pore_area_fraction
+      display_name: Measure pore area fraction

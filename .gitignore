@@ -1,0 +1,11 @@
+.idea
+__pycache__
+
+napari_microparticle.egg-info
+
+checkpoints
+sam_finetuning/data
+sam_finetuning/data_new
+
+sam_finetuning/test_metric.py
+
