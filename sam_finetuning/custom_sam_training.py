@@ -64,12 +64,12 @@ class CustomSamTrainer(joint_trainers.JointSamTrainer):
 
     def fit(self, **kwargs):
         print('CUSTOM: Running initial test validation')
+        self.logger = None
         metric = self._validate()
         print('metric: ', metric)
         print()
 
         super().fit(**kwargs)
-
 
     def _validate_impl(self, forward_context):
         rmse, matching_results = self.compute_particle_size_metric()
@@ -77,7 +77,7 @@ class CustomSamTrainer(joint_trainers.JointSamTrainer):
         if self.logger is not None:
             self.logger.log_metric(self._iteration, rmse, matching_results)
 
-        super()._validate_impl(forward_context)
+        return super()._validate_impl(forward_context)
 
     def compute_particle_size_metric(self,
                                      center_distance_threshold: float = 0.5,

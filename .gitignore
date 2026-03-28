@@ -5,7 +5,13 @@ napari_microparticle.egg-info
 
 checkpoints
 sam_finetuning/data
-sam_finetuning/data_new
+sam_finetuning/data_clean
+sam_finetuning/data_no_augment
+
+sam_finetuning/wandb_logs
 
 sam_finetuning/test_metric.py
+sam_finetuning/util/test_dataloader.py
+sam_finetuning/util/test_dir
 
+wandb
