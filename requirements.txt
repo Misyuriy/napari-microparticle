@@ -1,0 +1,8 @@
+napari
+numpy
+scikit-image
+scipy
+pathlib
+qtpy
+magicgui
+openpyxl

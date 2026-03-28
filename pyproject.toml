@@ -1,3 +1,31 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "napari-microparticle"
+description = "A plugin for powder particle size measurement and morphology analysis in 2D microscopy images."
+version = "0.1.0"
+readme = "README.md"
+authors = [
+    {name = "Andrey Misyurev"},
+]
+classifiers = ["Framework :: napari"]
+dependencies = [
+    "numpy",
+    "scikit-image",
+    "scipy",
+    "pathlib",
+    "qtpy",
+    "magicgui",
+    "openpyxl"
+]
+
+[project.optional-dependencies]
+all = ["napari[all]"]
+
+[project.urls]
+Homepage = "https://github.com/Misyuriy/napari-microparticle"
+
+[project.entry-points."napari.manifest"]
+napari-microparticle = "napari_microparticle:napari.yaml"

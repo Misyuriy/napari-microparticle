@@ -26,7 +26,7 @@ All measured data can be exported to .xlsx or .csv spreadsheets
 
 ## Usage
 
-To use any tool from this plugin, go to "Plugins" > "napari-microparticle" and select an option from the menu. This will open a panel inside the napari interface.
+To use any tool from this plugin, go to "Plugins" > "Powder Particle Analysis" and select an option from the menu. This will open a panel inside the napari interface.
 Any number of panels can be open at the same time.
 
 To use this plugin, you need a Labels layer with particle segmentation masks. You can quickly segment particles using the

@@ -1,4 +1,6 @@
 name: napari-microparticle
+display_name: Powder Particle Analysis
+
 contributions:
   commands:
     - id: napari-microparticle.measure_pore_area_fraction
@@ -32,3 +34,5 @@ contributions:
       display_name: Porous structure segmentation (DEBUG)
     - command: napari-microparticle.measure_pore_area_fraction
       display_name: Measure pore area fraction
+
+visibility: public
