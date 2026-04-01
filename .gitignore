@@ -7,6 +7,7 @@ napari_microparticle.egg-info
 checkpoints
 sam_finetuning/data
 sam_finetuning/data_clean
+sam_finetuning/data_clean_4
 sam_finetuning/data_no_augment
 
 sam_finetuning/wandb_logs

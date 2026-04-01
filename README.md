@@ -1,7 +1,7 @@
-# napari-microparticle
+# Powder Particle Analysis (napari-microparticle) 🔬
 
 ---
-Napari plugin for powder particle size measurement and morphology analysis in 2D microscopy images.
+[Napari](https://github.com/napari/napari) plugin for powder particle size measurement and morphology analysis in 2D microscopy images.
 
 This plugin is meant to be used together with the [micro-sam](https://github.com/computational-cell-analytics/micro-sam) tools. 
 [Segment Anything for Microscopy](https://www.nature.com/articles/s41592-024-02580-4) provides a convenient napari interface
@@ -36,5 +36,5 @@ Check the [micro-sam video tutorials](https://youtube.com/playlist?list=PLwYZXQJ
 
 ---
 ## SAM finetuning
-This repository also contains code that was used to finetune SAM checkpoints for particle segmentation in SEM (Scanning Electron Microscope) images of powder.
+This repository also contains code (`./sam_finetuning`) that was used to finetune SAM checkpoints for particle segmentation in SEM (Scanning Electron Microscope) images of powder.
 It is based on the training pipeline implemented in micro-sam.

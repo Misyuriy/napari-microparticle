@@ -84,20 +84,28 @@ def clean_disconnected_regions(labels: layers.Labels):
 
 @magic_factory(
     call_button='Get pore area fraction',
-    labels={'label': 'Particle labels'}
+    labels={'label': 'Particle labels'},
+    crop_border_distance={'label': 'Crop border, px', 'widget_type': 'Slider', 'min': 0, 'max': 5, 'step': 1},
 )
 def measure_pore_area_fraction(
         viewer: napari.Viewer,
-        labels: layers.Labels
+        labels: layers.Labels,
+        crop_border_distance: int = 3
 ):
     if labels is None:
         show_warning('No layer selected')
         return
 
     pore_data = viewer.layers['porous_structure'].data
+    particle_mask = labels.data
 
+    border_mask = get_particle_border_zone(particle_mask, crop_border_distance,
+                                           background_border_only=False)
     particle_mask = (labels.data != 0)
     pore_mask = (pore_data == 1)
+    # subtract border zone for less error
+    pore_mask = pore_mask & (~border_mask)
+    particle_mask = particle_mask & (~border_mask)
 
     fraction = np.sum(pore_mask) / np.sum(particle_mask)
     fraction_percent = round(fraction * 100, 2)
@@ -230,15 +238,19 @@ def export_data(
     edge_filter={'label': 'Edge detection', 'choices': ['Sobel', 'Prewitt', 'Farid', 'Scharr']},
     min_area={'widget_type': 'Slider', 'min': 0, 'max': 50, 'step': 1, 'label': 'min area (px)'},
     max_area={'widget_type': 'Slider', 'min': 100, 'max': 500, 'step': 1, 'label': 'max area (px)'},
-    min_depth={'widget_type': 'Slider', 'min': 10, 'max': 30, 'step': 1, 'label': 'min depth'}
+    min_depth={'widget_type': 'Slider', 'min': 10, 'max': 30, 'step': 1},
+    min_border_distance={'widget_type': 'Slider', 'min': 0, 'max': 5, 'step': 1},
+    background_border_only={'label': 'Only check background border'}
 )
 def segment_porous_structure(
         image: layers.Image,
         particle_labels: layers.Labels,
         edge_filter: str = 'Scharr',
         min_depth: int = 20,
-        min_area: int = 4,
+        min_area: int = 10,
         max_area: int = 300,
+        min_border_distance: int = 3,
+        background_border_only: bool = True
 ) -> napari.types.LayerDataTuple:
     if image is None:
         show_warning('No image selected')
@@ -257,8 +269,18 @@ def segment_porous_structure(
                                          max_area=max_area)
 
     particle_mask = particle_labels.data
-    pore_mask = pore_mask & (particle_mask != 0)
+    pore_mask = pore_mask & (particle_mask != 0)  # pores only inside particles
     output_data[pore_mask] = 1
+
+    border_zone = get_particle_border_zone(particle_mask, min_border_distance,
+                                           background_border_only=background_border_only)
+
+    # Remove pores intersecting the border zone
+    pore_labels, num_pores = label(output_data)  # label current pores
+    for label_id in range(1, num_pores + 1):
+        pore_component = (pore_labels == label_id)
+        if np.any(pore_component & border_zone):
+            output_data[pore_component] = 0
 
     return (output_data, {'name': 'porous_structure'}, 'labels')
 
@@ -314,37 +336,10 @@ def test_segment_porous_structure(
 
 
 @magic_factory(
-    method={'choices': ['Bilateral', 'Total Variation', 'Gaussian']},
-    sigma1={
-        'widget_type': 'FloatSlider',
-        'min': 0.01,
-        'max': 1.0,
-        'step': 0.01
-    },
-    sigma2={
-        'widget_type': 'FloatSlider',
-        'min': 1,
-        'max': 15,
-        'step': 1
-    },
+    call_button='Add figure to layers',
 )
-def denoise_image(
-        image: layers.Image,
-        method: str = 'Bilateral',
-        sigma1: float = 0.1,
-        sigma2: float = 1
-) -> napari.types.LayerDataTuple:
-    img_data = image.data
-
-    img_data = img_data.astype(np.float64)
-    img_data = (img_data - img_data.min()) / (img_data.max() - img_data.min())
-
-    match method:
-        case 'Bilateral':
-            denoised_data = restoration.denoise_bilateral(img_data, sigma_color=sigma1, sigma_spatial=sigma2)
-        case 'Total Variation':
-            denoised_data = restoration.denoise_tv_chambolle(img_data, weight=sigma1)
-        case 'Gaussian':
-            denoised_data = filters.gaussian(img_data, sigma=sigma1)
-
-    return (denoised_data, {'name': f'{image.name}_denoised'}, 'image')
+def export_figure(
+        viewer: napari.Viewer
+):
+    figure = viewer.export_figure()
+    viewer.add_image(figure, rgb=True, name='figure')

@@ -21,6 +21,9 @@ contributions:
     - id: napari-microparticle.clean_disconnected_regions
       title: Clean segmentation artifacts (tiny disconnected regions)
       python_name: napari_microparticle:clean_disconnected_regions
+    - id: napari-microparticle.export_figure
+      title: Export figure (demo)
+      python_name: napari_microparticle:export_figure
   widgets:
     - command: napari-microparticle.export_data
       display_name: Export data to spreadsheet
@@ -28,11 +31,13 @@ contributions:
       display_name: Porous structure segmentation
     - command: napari-microparticle.clean_disconnected_regions
       display_name: Clean tiny disconnected regions
-    - command: napari-microparticle.check_disconnected_regions
-      display_name: Check disconnected regions
-    - command: napari-microparticle.test_segment_porous_structure
-      display_name: Porous structure segmentation (DEBUG)
+    #- command: napari-microparticle.check_disconnected_regions
+    #  display_name: Check disconnected regions
+    #- command: napari-microparticle.test_segment_porous_structure
+    #  display_name: Porous structure segmentation (DEBUG)
     - command: napari-microparticle.measure_pore_area_fraction
       display_name: Measure pore area fraction
+    - command: napari-microparticle.export_figure
+      display_name: Export figure (demo)
 
 visibility: public
